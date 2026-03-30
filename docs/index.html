@@ -3,44 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Video Gallery</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            text-align: center;
-        }
-        h1 {
-            margin-top: 20px;
-        }
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            justify-items: center;
-            margin: 20px;
-        }
-        .video-container {
-            background: #fff;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        video {
-            max-width: 100%;
-            height: auto;
-        }
-        p {
-            margin: 5px 0 0 0;
-            font-size: 14px;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <nav>
+        <a href="index.html">Videos</a> |
+        <a href="ProcessFlowDiagrams.html">Diagrams</a> |
+        <a href="McCabe.html">McCabe-Thiele</a>
+    </nav>
+
     <h1>My Video Gallery</h1>
     <div class="gallery" id="gallery"></div>
 
     <script>
-        // List of videos in the "videos/" folder
         const videos = [
             "CannonLauncher.mp4",
             "LavaLampParticles.mp4",
@@ -64,7 +39,7 @@
             vid.controls = true;
 
             const caption = document.createElement("p");
-            caption.innerText = video.split("/").pop(); 
+            caption.innerText = video.split("/").pop();
 
             container.appendChild(vid);
             container.appendChild(caption);
