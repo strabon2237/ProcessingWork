@@ -1,1 +1,46 @@
-This contains all the code I used to make these animations
+This contains all the code I used to make these animations. I'll describe a bit how each of the files work and the main logic behind them. 
+
+CannonLauncher
+  The cannon launcher is not a very fitting name (it once outputted something that looks like that buts its gone under many revisions). The relies on changing the size
+  of the particles via a periodic function. This function has a trigonometric componenet to ensure the size values are fixed and they have a smooth change. Each point is
+  offsetted such that they go through different points of this function based on their position. To change the color, perlin noise has been implemented to randomly change 
+  color of the stroke such that it is random, but not very jarring. 
+
+Reaction-Diffusion Models
+  There are three files based on the reaction-diffusion models. Each file employs the grey scott model and feature 2 second order PDEs modelling the diffusion and 
+  reaction of species A and B. The paramters these second order PDEs take are the  current concentration of A and B, diffusion constants, how much A and B moved from 
+  each cell (laplacian calculation), kill rate, and feed rate. The kill rate represents how much B is taken out while the feed rate is how much A is put into the system
+  A simplified Euler's method was applied to estimate the laplacian of the PDE based on preset parameters that have been identified by this website: 
+  https://karlsims.com/rd.html. Initially, Reactant B is randomly distributed throughout the canvas in small quantities with 
+  reactant A taking up the rest of the matrix. The code constantly updates the concentrations of A and B in the cells based on the second order PDEs. 
+
+  ConstantFeedandKill
+      Kept Kill rate and Feed rate constant. Most reaction-diffusion models I've seen implement this, so I used this to cross check my model. 
+  KillandFeedRatioChangedViaInterpolation
+      Changed the kill and feed ratio via interpolation to simulate variation in feed rates found in chemical processes. It is linearly dependent.
+  KillandFeedRatioChangedViaNoise
+      Added Noise to calculate the variation in feed and kill rates to better simulate variations in these rates of chemical processes. 
+
+LavaLampParticles
+  The properties of each of the particles are stored in 2d arrays. Since each particles intiial position is identified by which row and column they are in, that 
+  was the most convenient. Properties stored include the positions, velocities, color, and size value. Initially the positions and velocities
+  of the particles are generated via a random function due to not needing noise. The color and size of the particles are changed via noise to ensure a smooth variation
+  between the values during the animations. Since the velocities are constant, the position is updated via this function (future implementations might include an acceleration
+  paramter to adjust via perlin noise). Using the initial random noise value, the color and size change based on the Perlin noise function and are constained between set
+  paramters to control the color and size change of each particle.
+
+MovingFields
+  The moving Fields Logic is all based around the center of each field. The points along the center of each field form an X pattern where the animation takes place. 
+  Each Field is stored in its own class to pass off values calculated in each field to the points (also defined as a class). Each position of the field is initialized
+  via a random function. A field is defined by two diagonals that change in properties with respect to time. The field passes on the values calculated in the updated 
+  function to each particle in the domain. Both the center and angle of rotation are controlled via perlin noise in the update function. A for loop updates all the positions
+  of each point in a field based on the calculated perlin noise movement and rotations. This is then applied to each field and updated accordingly. 
+
+KineticCollisionModelling
+  The kinetic collision model I have created can only model single speciies collisions in either first or second order reactions. Each particle is initialized with 
+  a random velocity and basic elastic collision mechanics have been implemented that trigger when the particles collide. The chance for conversion is randomized but follows
+  a pattern based on the conversion kinetics (first or second order kinetics). The algorithm calculates an expected conversion that we should expect at any given time to 
+  nudge the conversion chance to model the kinetics. For example, if we have very high concentration of reactants, we want the rate to be higher than if we had a lower
+  amount of reactants. A random conversion chance wouldn't accurately model what we want unless we change it in retrospect to match the model. This allows for 
+  higher order kinetics to be modelled. 
+  
