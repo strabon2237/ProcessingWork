@@ -17,8 +17,8 @@ y1star = equilibrium(x1_vals, P, ant1, ant2, parameters);
 
 %%%Mccabe Inputs
 R = 3;
-xd = .9;
-xb = .1;
+xd = .8;
+xb = .2;
 xz = .5;
 q = .5;
 
